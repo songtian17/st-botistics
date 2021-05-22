@@ -1,3 +1,6 @@
+const http = require('http');
+const fs = require('fs');
+
 const Discord = require('discord.js');
 const client = new Discord.Client;
 const config = require('./config.json');
@@ -53,3 +56,11 @@ client.on('message', async message => {
 });
 
 client.login(token);
+
+
+const server = http.createServer((req, res) => {
+	res.writeHead(200, { 'content-type': 'text/html' });
+	fs.createReadStream('index.html').pipe(res);
+});
+
+server.listen(process.env.PORT || 3000);
