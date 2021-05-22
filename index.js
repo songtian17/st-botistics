@@ -1,13 +1,15 @@
 const Discord = require('discord.js');
 const client = new Discord.Client;
 const config = require('./config.json');
+const bot_id = config.bot_id || process.env.BOT_ID;
+const token = config.token || process.env.TOKEN;
 
 client.once('ready', () => {
 	console.log('Ready!');
 });
 
 client.on('message', async message => {
-	if (message.author.id === config.bot_id) {
+	if (message.author.id === bot_id) {
 		return;
 	}
 	// usage: > [Title]\n[Content]
@@ -25,7 +27,7 @@ client.on('message', async message => {
 
 			// fetch message in channel belonging to the bot
 			const channelMessages = await message.channel.messages.fetch();
-			const botMessage = channelMessages.filter(m => m.author.id === config.bot_id && m.content.startsWith('####')).first();
+			const botMessage = channelMessages.filter(m => m.author.id === bot_id && m.content.startsWith('####')).first();
 
 			// edit bot message if user react with bookmark, then delete user message
 			if (reaction.emoji.name === '🔖') {
@@ -50,4 +52,4 @@ client.on('message', async message => {
 	}
 });
 
-client.login(config.token);
+client.login(token);
